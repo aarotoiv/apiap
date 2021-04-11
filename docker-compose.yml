@@ -1,0 +1,29 @@
+version: '3.8'
+
+services: 
+  db:
+    build:
+      context: ./
+      dockerfile: .dockerfiles/db
+    ports:
+      - '3306:3306'
+    volumes:
+      - /var/lib/mysql
+    restart: always
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - '8080:8080'
+
+  api:
+    build:
+      context: ./
+      dockerfile: .dockerfiles/api
+    image: node-mysql-app
+    ports:
+      - '3000:3000'
+    volumes: 
+      - ./api:/api
+      - /api/node_modules
